@@ -1,6 +1,6 @@
 # Stage 03 build
 
-Status: complete locally on 2026-11-10 (Asia/Dubai). [Build check](check.md) passed. [Stage 04 formal evaluation](../../04_failure_tests/output/report.md) subsequently passed; Stage 05 deployment is next. The public site remains the earlier Day 1 milestone.
+Status: complete on 2026-11-10 (Asia/Dubai). [Build check](check.md), [Stage 04 formal evaluation](../../04_failure_tests/output/report.md) and [Stage 05 public deployment](../../05_deploy/output/deploy-log.md) passed. The public site serves the complete product.
 
 ## Implemented
 
@@ -24,7 +24,7 @@ Status: complete locally on 2026-11-10 (Asia/Dubai). [Build check](check.md) pas
 
 ## Next stage
 
-Stage 05 follow-up (2026-11-10): the first public smoke erased values correctly but answered a later city question as a generic delivery-coverage question. Returned to Stage 03, added failing regression coverage, and implemented a deterministic forgotten-detail acknowledgment. Tombstone lookup excludes fresh replacements and does not hide unrelated current facts. The corrected build passed 124 offline tests and local startup/health checks; Stage 04 must be rerun before the revised source is deployed.
+Stage 05 follow-up (2026-11-10): the first public smoke erased values correctly but answered a later city question as a generic delivery-coverage question. Returned to Stage 03, added failing regression coverage, and implemented a deterministic forgotten-detail acknowledgment. Tombstone lookup excludes fresh replacements and does not hide unrelated current facts. The corrected build passed 124 offline tests and local startup/health checks; Stage 04 revalidation then passed all 18 live trials. The corrected product was deployed and passed the complete public browser scenario.
 
 Stop at the Stage 03 gate. Stage 04 must produce its failure-test scenario documents, report and evaluator pass before Stage 05 deployment. The offline Lab demonstrations and build tests do not replace that formal evaluation.
 
