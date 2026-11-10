@@ -23,6 +23,19 @@ class Retriever:
         self.clock = clock or SystemClock()
         self.embedder = embedder
 
+    def forgotten_fields(self, customer_id: str, query: str, *, scopes: tuple[str, ...] = ("customer",), include_listing: bool = True) -> list[dict]:
+        config = memory_config()
+        terms = set(re.findall(r"\w+", query.casefold()))
+        specific = {category for category in config["categories"] if terms & (
+            set(category.split("_")) | set(config["query_terms"].get(category, [])))}
+        listing = include_listing and not specific and bool(re.search(config["list_query_pattern"], query))
+        matches = []
+        for scope in dict.fromkeys(scopes):
+            for tombstone in self.store.unrestored_tombstones(customer_id, scope=scope):
+                if listing or tombstone["category"] in specific or terms & set(tombstone["key"].split("_")):
+                    matches.append(tombstone)
+        return matches
+
     def retrieve(self, customer_id: str, query: str, *, scopes: tuple[str, ...] = ("customer",)) -> list[dict]:
         config = memory_config()
         terms = set(re.findall(r"\w+", query.casefold()))

@@ -14,7 +14,7 @@ Status: passing
 
 ## Expected
 - Memory state: values, text, quotes and vectors erased; scoped metadata-only tombstone remains. Original replay and the later import cannot recreate the fact.
-- Agent reply: confirms completed erasure, clears chat state, and does not reveal or imply the health fact afterwards. Raw prior chat must not reach the answer model.
+- Agent reply: confirms completed erasure, clears chat state, and acknowledges that a requested fact was forgotten before asking for a fresh detail. Neither the forgotten value nor its attribute name is revealed in that acknowledgment; no answer-model call is needed. Raw prior chat must not reach the answer model.
 - Audit log: revoke event with metadata only.
 
 ## Automated as

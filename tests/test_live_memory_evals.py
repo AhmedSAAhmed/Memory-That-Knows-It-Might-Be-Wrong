@@ -142,7 +142,9 @@ def test_live_revocation(live, trial):
     llm.inputs.clear()
     asked = agent.respond("owner", "What health information do you remember about me?",
                           [{"role":"user", "content":"I am pregnant."}], incognito=True)
-    assert asked.injection_score is not None and asked.provider
+    assert asked.injection_score is not None
+    assert "You asked me to forget" in asked.reply
+    assert not llm.inputs, "Forgotten-detail acknowledgments must not need an answer model"
     assert not asked.evidence and "pregnan" not in asked.reply.casefold()
     assert "pregnan" not in json.dumps(llm.inputs).casefold()
     assert any(row["action"] == "revoke" for row in store.audit("owner"))

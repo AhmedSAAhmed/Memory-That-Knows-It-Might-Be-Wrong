@@ -154,6 +154,17 @@ class Agent:
         if session_store is not None and not blocked:
             Forgetting(session_store, clock=writer.clock).sweep(session_id)
             evidence.extend(Retriever(session_store, clock=writer.clock).retrieve(session_id, message, scopes=("session",)))
+        if not blocked:
+            forgotten = Retriever(writer.store, clock=writer.clock).forgotten_fields(
+                session_id, message, scopes=scopes, include_listing=not evidence)
+            if session_store is not None:
+                forgotten.extend(Retriever(session_store, clock=writer.clock).forgotten_fields(
+                    session_id, message, scopes=("session",), include_listing=not evidence))
+            if forgotten:
+                with writer.store.transaction() as db:
+                    writer.store._audit(db, session_id, "forgotten_lookup", writer.clock.now())
+                return TurnResult(reply="You asked me to forget that information, so I don't keep it. What should I use now?",
+                                  injection_score=score, notes=notes + ["forgotten fact: fresh detail required"], written_ids=written_ids)
         common = dict(evidence=evidence, injection_score=score, notes=notes, written_ids=written_ids)
         uncertain = [item for item in evidence if item["band"] == "ask"]
         hedged = [item for item in evidence if item["band"] == "hedge"]

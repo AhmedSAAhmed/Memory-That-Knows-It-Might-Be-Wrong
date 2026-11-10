@@ -2,10 +2,10 @@
 
 Status: **pass**
 
-Run: `20261110T112351Z-9beb3896` · UTC: 2026-11-10T11:23:51+00:00
+Run: `20261110T114228Z-4fc79cce` · UTC: 2026-11-10T11:42:28+00:00
 
-Offline regressions: **121 passed, 18 deselected in 4.58s**.
-Live evaluations: **18 passed in 39.60s**.
+Offline regressions: **124 passed, 18 deselected in 4.73s**.
+Live evaluations: **18 passed in 35.78s**.
 
 | Scenario | Successful runs | Gate |
 |---|---|---|

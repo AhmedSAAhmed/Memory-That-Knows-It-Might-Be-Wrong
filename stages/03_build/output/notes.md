@@ -24,6 +24,8 @@ Status: complete locally on 2026-11-10 (Asia/Dubai). [Build check](check.md) pas
 
 ## Next stage
 
+Stage 05 follow-up (2026-11-10): the first public smoke erased values correctly but answered a later city question as a generic delivery-coverage question. Returned to Stage 03, added failing regression coverage, and implemented a deterministic forgotten-detail acknowledgment. Tombstone lookup excludes fresh replacements and does not hide unrelated current facts. The corrected build passed 124 offline tests and local startup/health checks; Stage 04 must be rerun before the revised source is deployed.
+
 Stop at the Stage 03 gate. Stage 04 must produce its failure-test scenario documents, report and evaluator pass before Stage 05 deployment. The offline Lab demonstrations and build tests do not replace that formal evaluation.
 
 Operational limits remain those of the planned demo: disposable SQLite hosting, fictional seed data, optional external embeddings, and session identities that rotate on process restart unless `SESSION_SECRET` is configured. Independent browser sessions intentionally receive separate sandboxes.

@@ -92,3 +92,37 @@ def test_memory_content_is_never_inserted_into_system_instructions(scenario):
     Agent(llm=llm, writer=writer).respond("a", "Which city?", [], incognito=True)
     assert "Dubai" not in " ".join(m["content"] for m in captured if m["role"] == "system")
     assert "Dubai" in " ".join(m["content"] for m in captured if m["role"] == "user")
+
+
+def test_forgotten_city_asks_for_a_fresh_detail_instead_of_delivery_coverage(scenario):
+    store, writer, clock, memory_id = scenario
+    llm = FakeLLM(payload(candidates=[]))
+    agent = Agent(llm=llm, writer=writer)
+    agent.respond("a", "forget everything", [])
+    llm.calls.clear()
+    result = agent.respond("a", "Which city do you have for delivery?", [], incognito=True)
+    assert "You asked me to forget" in result.reply
+    assert "Dubai" not in result.reply and not result.evidence and not result.used_ids
+    assert "answer" not in llm.calls
+
+
+def test_restated_city_replaces_the_forgotten_lookup(scenario):
+    store, writer, clock, memory_id = scenario
+    agent = Agent(llm=FakeLLM(payload(candidates=[])), writer=writer)
+    agent.respond("a", "forget everything", [])
+    clock.advance(seconds=1)
+    candidate = fact("Abu Dhabi")
+    new_id = writer.write("a", "restated", candidate.quote, [candidate], guard_score=0.0).stored_ids[0]
+    result = agent.respond("a", "Which city do you have for delivery?", [], incognito=True)
+    assert "Abu Dhabi" in result.reply and new_id in result.used_ids
+    assert "You asked me to forget" not in result.reply
+
+
+def test_forgotten_city_does_not_hide_a_remaining_language_fact(scenario):
+    store, writer, clock, memory_id = scenario
+    candidate = fact("English", category="language", key="language", quote="I speak English")
+    writer.write("a", "language", candidate.quote, [candidate], guard_score=0.0)
+    agent = Agent(llm=FakeLLM(payload(candidates=[])), writer=writer)
+    agent.respond("a", "forget my city", [])
+    result = agent.respond("a", "Which language do you remember?", [], incognito=True)
+    assert "English" in result.reply and "You asked me to forget" not in result.reply

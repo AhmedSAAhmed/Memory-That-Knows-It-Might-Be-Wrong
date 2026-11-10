@@ -168,6 +168,15 @@ class MemoryStore:
             row = self._db.execute("SELECT * FROM tombstones WHERE customer_id=? AND scope=? AND key=?", (customer_id, scope, key)).fetchone()
             return dict(row) if row else None
 
+    def unrestored_tombstones(self, customer_id: str, *, scope: str = "customer") -> list[dict]:
+        """Only erased keys without a current replacement; payloads stay erased."""
+        with self._lock:
+            rows = self._db.execute("""SELECT t.* FROM tombstones t WHERE t.customer_id=? AND t.scope=?
+                AND NOT EXISTS (SELECT 1 FROM memories m WHERE m.customer_id=t.customer_id
+                    AND m.scope=t.scope AND m.key=t.key AND m.status IN ('active','stale','contested'))""",
+                                    (customer_id, scope)).fetchall()
+            return [dict(row) for row in rows]
+
     def all_memories(self, customer_id: str, *, include_history: bool = True) -> list[Memory]:
         with self._lock:
             sql = "SELECT * FROM memories WHERE customer_id=?"
