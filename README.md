@@ -2,7 +2,9 @@
 
 A customer-service memory layer, built for Doo's use case (AI customer service), that knows what it knows, what it doesn't, and when to forget.
 
-- **Live demo:** _coming with Day 0 deploy_
+- **Live demo:** [Open the demo](https://memory-might-be-wrong.onrender.com)
+- **Day 0 verification:** [passing local and live checks](stages/03_build/output/day-0.md)
+- **Day 1 verification:** [memory write path and test results](stages/03_build/output/day-1.md)
 - **90-second walkthrough:** _coming_
 - **Architecture:** [stages/02_architecture](stages/02_architecture/CONTEXT.md)
 - **Memory model:** [_shared/memory-model.md](_shared/memory-model.md) · **Policies:** [_shared/policies.md](_shared/policies.md)
@@ -23,7 +25,7 @@ Open http://localhost:7860. Tests: `uv run pytest`.
 
 ## Stack
 
-Python 3.11 · Gradio 6 on FastAPI · SQLite · Groq (`openai/gpt-oss-120b`, `gpt-oss-20b`, `llama-prompt-guard-2-86m`) with OpenRouter and Gemini fallback · deployed on Render.
+Python 3.11 · Gradio 6 on FastAPI · SQLite · Groq (`openai/gpt-oss-120b`, `gpt-oss-20b`, `llama-prompt-guard-2-86m`) with OpenRouter and Gemini fallback · configured for Render deployment.
 
 ## Repo layout
 

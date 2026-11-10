@@ -11,6 +11,25 @@
     "assert": 0.75,
     "hedge": 0.4
   },
+  "guard_threshold": 0.9,
+  "limits": {"message_chars": 2000, "field_chars": 500, "key_chars": 80, "max_candidates": 12},
+  "key_aliases": {
+    "location": {"city": "delivery_city", "home_city": "delivery_city", "current_city": "delivery_city", "residence_city": "delivery_city", "living_city": "delivery_city", "address": "delivery_address", "home_address": "delivery_address"},
+    "language": {"preferred_language": "language", "language_preference": "language"},
+    "contact_pref": {"contact_method": "contact_preference", "preferred_contact": "contact_preference", "contact_pref": "contact_preference"}
+  },
+  "secret_patterns": [
+    "(?i)\\b(?:password|passwd|cvv|otp|one.time.password|iban|passport|national.?id|card.number)\\b",
+    "(?<!\\d)(?:\\d[ -]?){13,19}(?!\\d)",
+    "(?i)\\bAE\\d{21}\\b",
+    "(?i)\\b(?:sk-|gsk_)[a-z0-9_-]+"
+  ],
+  "instruction_patterns": ["(?i)\\b(?:ignore|override|disregard)\\b.{0,40}\\b(?:rules|instructions|system|policy)\\b", "(?i)\\b(?:reveal|show)\\b.{0,30}\\b(?:other users|system prompt|api keys)\\b"],
+  "sensitive_patterns": {
+    "health": "(?i)\\b(?:pregnan\\w*|diabet\\w*|diagnos\\w*|medication|medical|health|allerg\\w*)\\b",
+    "finance": "(?i)\\b(?:salary|income|debt|bank balance|financial)\\b",
+    "family": "(?i)\\b(?:spouse|husband|wife|children|my child|my son|my daughter)\\b"
+  },
   "corroboration_boost": 0.05,
   "corroboration_cap": 0.98,
   "contested_penalty": 0.35,

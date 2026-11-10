@@ -21,10 +21,13 @@ Factory reference. Every number below lives in [memory-config.json](memory-confi
 
 ```
 decay      = 0.5 ** (age_days / half_life_days)
-effective  = base_confidence * decay            (+ corroboration, capped)
+supported  = min(corroboration_cap, base_confidence + corroborations * corroboration_boost)
+effective  = supported * decay
 contested  -> effective - contested_penalty
 revoked    -> not retrievable at all
 ```
+
+Corroboration decays with the fact; repeating old source events cannot refresh it or add support. A weaker source cannot refresh the confirmation timestamp or replace stronger provenance. Timestamps come from the caller's clock, never the extraction model. Conflicting customer statements with equal timestamps are contested until a newer statement resolves them.
 
 ## Behaviour bands
 

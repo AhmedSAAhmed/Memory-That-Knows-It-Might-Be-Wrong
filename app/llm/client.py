@@ -2,12 +2,13 @@
 from __future__ import annotations
 
 import logging
+import math
 from dataclasses import dataclass
 from typing import Any, Sequence
 
 from openai import OpenAI
 
-from app.config import Settings, get_settings
+from app.config import Settings, get_settings, memory_config
 
 log = logging.getLogger(__name__)
 
@@ -88,7 +89,7 @@ class LLMClient:
                     raise ValueError("empty completion")
                 return LLMResult(text=text, provider=p.name, model=model)
             except Exception as exc:  # fall through to next provider
-                log.warning("LLM provider %s failed: %s", p.name, exc)
+                log.warning("LLM provider %s failed (%s)", p.name, type(exc).__name__)
                 errors.append(f"{p.name}: {type(exc).__name__}")
         raise LLMUnavailable("All providers failed: " + "; ".join(errors))
 
@@ -100,11 +101,12 @@ class LLMClient:
         try:
             resp = self._client(groq).chat.completions.create(
                 model=self.settings.groq_guard_model,
-                messages=[{"role": "user", "content": text[:2000]}],
+                messages=[{"role": "user", "content": text[:memory_config()["limits"]["message_chars"]]}],
                 max_tokens=8,
                 temperature=0,
             )
-            return float((resp.choices[0].message.content or "").strip())
+            score = float((resp.choices[0].message.content or "").strip())
+            return score if math.isfinite(score) and 0 <= score <= 1 else None
         except Exception as exc:
-            log.warning("prompt guard failed: %s", exc)
+            log.warning("prompt guard failed (%s)", type(exc).__name__)
             return None

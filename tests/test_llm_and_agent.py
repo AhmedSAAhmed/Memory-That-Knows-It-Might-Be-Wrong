@@ -89,3 +89,16 @@ def test_factory_files_load():
     cfg = memory_config()
     assert cfg["thresholds"]["assert"] > cfg["thresholds"]["hedge"]
     assert "EVIDENCE" in prompt("answerer")
+
+
+@pytest.mark.parametrize("score", ["nan", "inf", "-1", "1.5", "not-a-score"])
+def test_invalid_guard_scores_fail_closed(score):
+    client = make_client({"groq": lambda kw: score})
+    assert client.injection_score("test") is None
+
+
+def test_provider_error_log_does_not_echo_payload(caplog):
+    client = make_client({"groq": lambda kw: RuntimeError("private payload hunter2")})
+    with pytest.raises(LLMUnavailable):
+        client.chat([{"role": "user", "content": "hello"}])
+    assert "hunter2" not in caplog.text
