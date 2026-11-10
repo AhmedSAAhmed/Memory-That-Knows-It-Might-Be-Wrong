@@ -1,0 +1,36 @@
+{
+  "_doc": "Single home for every memory number. Read by app/memory/config.py. Explained in memory-model.md.",
+  "source_base_confidence": {
+    "user_confirmed": 0.95,
+    "user_stated": 0.9,
+    "agent_record": 0.85,
+    "crm_import": 0.8,
+    "inferred": 0.55
+  },
+  "thresholds": {
+    "assert": 0.75,
+    "hedge": 0.4
+  },
+  "corroboration_boost": 0.05,
+  "corroboration_cap": 0.98,
+  "contested_penalty": 0.35,
+  "stale_after_fraction_of_half_life": 1.0,
+  "categories": {
+    "identity":      {"half_life_days": 3650, "sensitivity": "normal"},
+    "contact_pref":  {"half_life_days": 365,  "sensitivity": "normal"},
+    "language":      {"half_life_days": 730,  "sensitivity": "normal"},
+    "location":      {"half_life_days": 365,  "sensitivity": "normal"},
+    "preference":    {"half_life_days": 180,  "sensitivity": "normal"},
+    "product_owned": {"half_life_days": 365,  "sensitivity": "normal"},
+    "open_issue":    {"half_life_days": 14,   "sensitivity": "normal"},
+    "commitment":    {"half_life_days": 30,   "sensitivity": "normal"},
+    "sentiment":     {"half_life_days": 2,    "sensitivity": "normal"},
+    "health":        {"half_life_days": 90,   "sensitivity": "sensitive"},
+    "finance":       {"half_life_days": 90,   "sensitivity": "sensitive"},
+    "family":        {"half_life_days": 365,  "sensitivity": "sensitive"},
+    "credential":    {"half_life_days": 0,    "sensitivity": "secret"}
+  },
+  "never_store_patterns": [
+    "card_number", "cvv", "password", "otp", "iban", "national_id", "passport_number"
+  ]
+}

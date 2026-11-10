@@ -1,0 +1,25 @@
+[project]
+name = "memory-might-be-wrong"
+version = "0.1.0"
+description = "A customer-service memory layer that knows what it knows, what it doesn't, and when to forget."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "gradio>=6.31,<7",
+    "fastapi>=0.162",
+    "uvicorn[standard]>=0.54",
+    "openai>=3.49",
+    "pydantic>=2.14",
+    "numpy>=2.4",
+    "python-dotenv>=1.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "httpx>=0.28",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

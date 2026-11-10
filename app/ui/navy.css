@@ -1,0 +1,118 @@
+/* Navy theme tokens (from navy-astro.pages.dev). See _shared/brand-theme.md. */
+:root {
+  --navy-background: oklch(98.8% .006 275);
+  --navy-foreground: oklch(20% .04 275);
+  --navy-muted: oklch(97.2% .01 275);
+  --navy-muted-foreground: oklch(48% .03 275);
+  --navy-faint-foreground: oklch(64% .025 275);
+  --navy-border: oklch(91% .016 275);
+  --navy-input: oklch(82% .025 275);
+  --navy-mist: oklch(95% .02 275);
+  --navy-lilac: oklch(91% .045 280);
+  --navy-frost: oklch(94% .025 245);
+  --navy-primary: oklch(52% .22 268);
+  --navy-primary-highlight: oklch(60% .2 268);
+  --navy-inverse: oklch(16% .05 270);
+  --navy-inverse-highlight: oklch(30% .06 270);
+  --navy-ok: oklch(55% .13 155);
+  --navy-warn: oklch(68% .15 75);
+  --navy-bad: oklch(56% .19 25);
+  --navy-radius: .375rem;
+  --navy-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+body, gradio-app, .gradio-container {
+  background: var(--navy-background) !important;
+  color: var(--navy-foreground);
+  font-family: "Switzer", sans-serif !important;
+}
+.gradio-container { max-width: 1200px !important; margin: 0 auto !important; }
+footer { display: none !important; }
+
+/* header band */
+.navy-hero {
+  border-bottom: 1px solid var(--navy-border);
+  padding: 28px 4px 22px;
+  margin-bottom: 8px;
+}
+.navy-eyebrow {
+  font-family: var(--navy-mono);
+  font-size: .75rem;
+  letter-spacing: .02em;
+  color: var(--navy-faint-foreground);
+  text-transform: none;
+  margin: 0 0 10px;
+}
+.navy-hero h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  color: var(--navy-foreground);
+}
+.navy-hero h1 em { font-style: italic; color: var(--navy-primary); }
+.navy-hero p { color: var(--navy-muted-foreground); max-width: 62ch; margin: 0; font-size: 1rem; }
+.navy-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.navy-chip {
+  font-family: var(--navy-mono); font-size: .72rem;
+  padding: 3px 8px; border: 1px solid var(--navy-border);
+  border-radius: 999px; background: var(--navy-muted); color: var(--navy-muted-foreground);
+}
+
+/* tabs */
+.tab-wrapper button, button[role="tab"] {
+  font-family: "Switzer", sans-serif !important;
+  font-weight: 500 !important;
+}
+button[role="tab"][aria-selected="true"] { color: var(--navy-foreground) !important; border-color: var(--navy-primary) !important; }
+
+/* panels and cards */
+.navy-panel {
+  background: #fff;
+  border: 1px solid var(--navy-border);
+  border-radius: var(--navy-radius);
+  padding: 16px;
+}
+.navy-section-title {
+  font-family: var(--navy-mono); font-size: .75rem; color: var(--navy-faint-foreground); margin: 0 0 8px;
+}
+.navy-empty { color: var(--navy-muted-foreground); font-size: .9rem; }
+
+/* evidence cards */
+.ev-card {
+  border: 1px solid var(--navy-border); border-radius: var(--navy-radius);
+  padding: 10px 12px; margin-bottom: 8px; background: #fff;
+}
+.ev-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.ev-key { font-family: var(--navy-mono); font-size: .75rem; color: var(--navy-muted-foreground); }
+.ev-text { font-size: .92rem; margin: 4px 0 8px; color: var(--navy-foreground); }
+.ev-meta { font-family: var(--navy-mono); font-size: .7rem; color: var(--navy-faint-foreground); }
+.ev-bar { height: 4px; background: var(--navy-mist); border-radius: 2px; overflow: hidden; }
+.ev-bar > span { display: block; height: 100%; background: var(--navy-primary); }
+.badge {
+  font-family: var(--navy-mono); font-size: .68rem; padding: 2px 7px; border-radius: 999px;
+  border: 1px solid transparent; white-space: nowrap;
+}
+.badge-assert { background: oklch(95% .04 155); color: var(--navy-ok); border-color: oklch(88% .06 155); }
+.badge-hedge  { background: oklch(96% .05 80);  color: oklch(50% .12 70); border-color: oklch(88% .08 80); }
+.badge-ask    { background: oklch(96% .03 25);  color: var(--navy-bad); border-color: oklch(88% .06 25); }
+.badge-muted  { background: var(--navy-muted); color: var(--navy-muted-foreground); border-color: var(--navy-border); }
+
+/* buttons */
+button.primary, .navy-primary-btn {
+  background: var(--navy-primary) !important; color: #fff !important;
+  border: none !important; border-radius: var(--navy-radius) !important; font-weight: 500 !important;
+}
+button.primary:hover { background: var(--navy-primary-highlight) !important; }
+button.secondary {
+  background: var(--navy-lilac) !important; color: var(--navy-foreground) !important;
+  border: none !important; border-radius: var(--navy-radius) !important;
+}
+
+/* status line under chat */
+.navy-status { font-family: var(--navy-mono); font-size: .72rem; color: var(--navy-faint-foreground); }
+
+@media (max-width: 640px) {
+  .navy-hero { padding: 18px 0 14px; }
+}
