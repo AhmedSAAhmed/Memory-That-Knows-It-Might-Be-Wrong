@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import re
 import sqlite3
+import math
 from threading import RLock
 from uuid import uuid4
 
@@ -46,6 +47,15 @@ class MemoryStore:
             CREATE TABLE IF NOT EXISTS audit (
                 id TEXT PRIMARY KEY, customer_id TEXT NOT NULL, action TEXT NOT NULL,
                 memory_id TEXT, reason TEXT, at TEXT NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS tombstones (
+                customer_id TEXT NOT NULL, scope TEXT NOT NULL, key TEXT NOT NULL,
+                category TEXT NOT NULL, revoked_at TEXT NOT NULL,
+                PRIMARY KEY(customer_id,scope,key)
+            );
+            CREATE TABLE IF NOT EXISTS embeddings (
+                memory_id TEXT PRIMARY KEY REFERENCES memories(id), customer_id TEXT NOT NULL,
+                vector TEXT NOT NULL
             );
             CREATE VIRTUAL TABLE IF NOT EXISTS memories_fts USING fts5(
                 memory_id UNINDEXED, customer_id UNINDEXED, scope UNINDEXED, key, value, text
@@ -92,11 +102,11 @@ class MemoryStore:
         with self._lock:
             return [self._memory(r) for r in self._db.execute(sql + " ORDER BY rowid", (customer_id, scope))]
 
-    def search(self, customer_id: str, query: str, *, scope: str = "customer") -> list[Memory]:
+    def search(self, customer_id: str, query: str, *, scope: str = "customer", match_any: bool = False) -> list[Memory]:
         tokens = re.findall(r"\w+", query, flags=re.UNICODE)
         if not tokens:
             return []
-        expression = " AND ".join('"' + token + '"' for token in tokens)
+        expression = (" OR " if match_any else " AND ").join('"' + token + '"' for token in tokens)
         with self._lock:
             rows = self._db.execute("""
                 SELECT m.* FROM memories m JOIN memories_fts f ON f.memory_id=m.id
@@ -127,5 +137,46 @@ class MemoryStore:
 
     def _index(self, db, record: Memory):
         db.execute("DELETE FROM memories_fts WHERE memory_id=? AND customer_id=?", (record.id, record.customer_id))
+        db.execute("DELETE FROM embeddings WHERE memory_id=? AND customer_id=?", (record.id, record.customer_id))
         if record.status in {"active", "stale", "contested"}:
             db.execute("INSERT INTO memories_fts VALUES (?,?,?,?,?,?)", (record.id, record.customer_id, record.scope, record.key, record.value, record.text))
+
+    def put_embedding(self, customer_id: str, memory_id: str, vector: list[float], *, expected_text: str | None = None) -> bool:
+        if not vector or len(vector) > memory_config()["retrieval"]["embedding_dimensions"] or any(
+            isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) for v in vector
+        ) or not any(vector):
+            return False
+        with self.transaction() as db:
+            record = self.get(customer_id, memory_id)
+            if not record or record.status not in {"active", "stale", "contested"}:
+                return False
+            if expected_text is not None and expected_text != record.text:
+                return False
+            db.execute("INSERT INTO embeddings VALUES (?,?,?) ON CONFLICT(memory_id) DO UPDATE SET vector=excluded.vector",
+                       (memory_id, customer_id, json.dumps(vector)))
+            return True
+
+    def embeddings(self, customer_id: str, *, scope: str = "customer") -> dict[str, list[float]]:
+        with self._lock:
+            rows = self._db.execute("""SELECT e.memory_id,e.vector FROM embeddings e JOIN memories m ON m.id=e.memory_id
+                WHERE e.customer_id=? AND m.customer_id=? AND m.scope=? AND m.status IN ('active','stale','contested')""",
+                                    (customer_id, customer_id, scope))
+            return {r[0]: json.loads(r[1]) for r in rows}
+
+    def tombstone(self, customer_id: str, scope: str, key: str) -> dict | None:
+        with self._lock:
+            row = self._db.execute("SELECT * FROM tombstones WHERE customer_id=? AND scope=? AND key=?", (customer_id, scope, key)).fetchone()
+            return dict(row) if row else None
+
+    def all_memories(self, customer_id: str, *, include_history: bool = True) -> list[Memory]:
+        with self._lock:
+            sql = "SELECT * FROM memories WHERE customer_id=?"
+            if not include_history:
+                sql += " AND status IN ('active','stale','contested')"
+            return [self._memory(row) for row in self._db.execute(sql + " ORDER BY rowid", (customer_id,))]
+
+    def clear_customer(self, customer_id: str) -> None:
+        """Explicit demo reset / transient-session expiry, always identity-bound."""
+        with self.transaction() as db:
+            for table in ("memories_fts", "embeddings", "source_events", "memories", "tombstones", "privacy", "audit"):
+                db.execute(f"DELETE FROM {table} WHERE customer_id=?", (customer_id,))

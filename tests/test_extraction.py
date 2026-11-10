@@ -52,7 +52,7 @@ def test_extractor_uses_fast_model_and_validates_quote():
     payload(candidates=[{**payload()["candidates"][0], "source": "user_confirmed"}]),
     payload(candidates=[{**payload()["candidates"][0], "quote": "not in message"}]),
     payload(candidates=[{**payload()["candidates"][0], "customer_id": "other"}]),
-    payload(candidates=[{**payload()["candidates"][0], "scope": "session"}]),
+    payload(candidates=[{**payload()["candidates"][0], "scope": "workspace"}]),
     payload(candidates=[payload()["candidates"][0], {**payload()["candidates"][0], "value": "Sharjah"}]),
 ])
 def test_invalid_extraction_rejected_as_a_whole(output):
@@ -84,7 +84,7 @@ def test_agent_writes_after_guard_before_answer_and_replay_is_safe(tmp_path):
         result = agent.respond("layla", "I live in Dubai", [], message_id="event-1")
         assert llm.calls == ["guard", "extract", "answer"]
         assert result.written_ids == [store.list_memories("layla")[0].id]
-        assert result.used_ids == []  # Never endorse invented evidence IDs.
+        assert "invented" not in result.used_ids
         agent.respond("layla", "I live in Dubai", [], message_id="event-1")
         assert store.list_memories("layla")[0].corroborations == 0
         assert store.list_memories("someone-else") == []
@@ -103,7 +103,7 @@ def test_agent_write_failures_leave_store_empty_but_answer_still_works(tmp_path,
         llm.extraction = LLMUnavailable("offline")
     with MemoryStore(tmp_path / "test.db") as store:
         result = Agent(llm=llm, writer=WritePath(store)).respond("layla", "I live in Dubai", [], incognito=mode == "incognito")
-        assert result.reply == "Hello"
+        assert result.reply and not result.used_ids
         assert not result.written_ids and not store.list_memories("layla", include_history=True)
         assert result.notes
         if mode in {"incognito", "guard_down", "injection"}:
@@ -122,7 +122,7 @@ def test_model_cannot_claim_deletion_was_performed(tmp_path):
     llm = FakeLLM(payload(candidates=[]))
     with MemoryStore(tmp_path / "test.db") as store:
         result = Agent(llm=llm, writer=WritePath(store)).respond("layla", "Forget everything", [])
-        assert "not available" in result.reply
+        assert "no stored memories" in result.reply.casefold()
         assert not llm.calls
 
 

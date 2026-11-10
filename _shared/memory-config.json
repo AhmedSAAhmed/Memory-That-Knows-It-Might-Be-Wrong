@@ -1,5 +1,5 @@
 {
-  "_doc": "Single home for every memory number. Read by app/memory/config.py. Explained in memory-model.md.",
+  "_doc": "Single home for every memory number. Read by app/config.py. Explained in memory-model.md.",
   "source_base_confidence": {
     "user_confirmed": 0.95,
     "user_stated": 0.9,
@@ -12,6 +12,19 @@
     "hedge": 0.4
   },
   "guard_threshold": 0.9,
+  "evaluation": {"repetitions": 3, "live_scenarios": 6},
+  "retrieval": {"limit": 6, "lexical_weight": 0.5, "embedding_weight": 0.5, "embedding_dimensions": 256},
+  "demo": {"max_days": 365, "session_seconds": 28800, "max_sessions": 1000},
+  "query_terms": {
+    "location": ["city", "live", "location", "delivery", "address", "moved"],
+    "language": ["language", "speak", "arabic", "english"],
+    "contact_pref": ["contact", "phone", "whatsapp", "email"],
+    "open_issue": ["issue", "ticket", "damaged", "sofa", "problem"],
+    "commitment": ["promise", "refund", "commitment"],
+    "preference": ["prefer", "preference", "like", "food", "diet", "vegetarian"]
+  },
+  "list_query_pattern": "(?i)\\b(?:remember|memories|about me)\\b",
+  "confirmation_replies": ["yes", "yes please", "correct", "still correct", "that's right", "that is right", "نعم"],
   "limits": {"message_chars": 2000, "field_chars": 500, "key_chars": 80, "max_candidates": 12},
   "key_aliases": {
     "location": {"city": "delivery_city", "home_city": "delivery_city", "current_city": "delivery_city", "residence_city": "delivery_city", "living_city": "delivery_city", "address": "delivery_address", "home_address": "delivery_address"},

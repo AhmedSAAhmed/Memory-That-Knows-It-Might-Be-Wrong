@@ -24,8 +24,8 @@ def screening_reason(score: float | None) -> str | None:
 
 
 def candidate_reason(candidate: Candidate, message: str, *, blocked: set[str], consented: set[str],
-                     allowed_orders: set[str]) -> str | None:
-    if candidate.scope == "session":
+                     allowed_orders: set[str], allow_session: bool = False) -> str | None:
+    if candidate.scope == "session" and not allow_session:
         return "session_scope_not_persisted"
     if candidate.scope.startswith("order:") and candidate.scope[6:] not in allowed_orders:
         return "unauthorized_scope"

@@ -54,7 +54,7 @@ class Extractor:
                 identity = (candidate.scope, candidate.key)
                 if identity in keys or candidate.source not in {"user_stated", "inferred"}:
                     raise ValueError
-                if candidate.scope == "session" or candidate.quote not in message:
+                if candidate.quote not in message:
                     raise ValueError
                 keys.add(identity)
                 candidates.append(candidate)

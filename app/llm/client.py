@@ -110,3 +110,18 @@ class LLMClient:
         except Exception as exc:
             log.warning("prompt guard failed (%s)", type(exc).__name__)
             return None
+
+    def embed(self, text: str) -> list[float] | None:
+        """Optional Gemini embeddings; every failure leaves FTS5 usable."""
+        gemini = next((provider for provider in self.providers if provider.name == "gemini"), None)
+        if gemini is None:
+            return None
+        try:
+            result = self._client(gemini).embeddings.create(
+                model=self.settings.gemini_embed_model, input=text,
+                dimensions=memory_config()["retrieval"]["embedding_dimensions"],
+            )
+            return result.data[0].embedding
+        except Exception as exc:
+            log.warning("embedding unavailable (%s)", type(exc).__name__)
+            return None

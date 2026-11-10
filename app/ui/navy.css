@@ -26,7 +26,7 @@ body, gradio-app, .gradio-container {
   color: var(--navy-foreground);
   font-family: "Switzer", sans-serif !important;
 }
-.gradio-container { max-width: 1200px !important; margin: 0 auto !important; }
+.gradio-container { width: 100% !important; max-width: 1200px !important; margin: 0 auto !important; }
 footer { display: none !important; }
 
 /* header band */

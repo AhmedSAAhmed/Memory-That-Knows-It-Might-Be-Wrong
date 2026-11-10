@@ -25,6 +25,8 @@ def evidence_html(evidence: list[dict], used: list[str] | None = None, hedged: l
             f'<div class="ev-bar"><span style="width:{max(0, min(100, conf * 100)):.0f}%"></span></div>'
             f'<div class="ev-meta">{conf:.2f} · {escape(str(ev.get("source", "")))} · '
             f'{escape(str(ev.get("age", "")))}{escape(mark)}</div>'
+            f'<blockquote>{escape(str(ev.get("quote", "")))}</blockquote>'
+            f'<div class="ev-meta">Evidence ID: {escape(str(ev.get("id", "")))}</div>'
             '</div>'
         )
     return '<div class="navy-panel"><p class="navy-section-title">/// Relying on</p>' + "".join(cards) + "</div>"

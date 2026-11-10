@@ -5,6 +5,8 @@ A customer-service memory layer, built for Doo's use case (AI customer service),
 - **Live demo:** [Open the demo](https://memory-might-be-wrong.onrender.com)
 - **Day 0 verification:** [passing local and live checks](stages/03_build/output/day-0.md)
 - **Day 1 verification:** [memory write path and test results](stages/03_build/output/day-1.md)
+- **Local build:** [Stage 03 implementation and verification](stages/03_build/output/notes.md) — passed.
+- **Failure evaluation:** [Stage 04 report](stages/04_failure_tests/output/report.md) — 121 offline tests and 18 live trials passed; deployment is next.
 - **90-second walkthrough:** _coming_
 - **Architecture:** [stages/02_architecture](stages/02_architecture/CONTEXT.md)
 - **Memory model:** [_shared/memory-model.md](_shared/memory-model.md) · **Policies:** [_shared/policies.md](_shared/policies.md)

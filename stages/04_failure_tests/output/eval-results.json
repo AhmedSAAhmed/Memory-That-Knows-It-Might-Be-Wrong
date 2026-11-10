@@ -1,0 +1,342 @@
+{
+  "runs": [
+    {
+      "id": "20261110T112225Z-ebad6a83",
+      "at": "2026-11-10T11:22:25+00:00",
+      "passed": false,
+      "issues": [
+        "Offline regression suite failed",
+        "Live pass^3 gate is incomplete or failing"
+      ],
+      "offline": {
+        "summary": "46 passed, 18 deselected, 2 warnings, 75 errors in 9.71s",
+        "exit_code": 1
+      },
+      "live_summary": "Not run",
+      "trials": [],
+      "scores": [
+        {
+          "scenario": "FT-01-clear-contradiction",
+          "file": "FT-01-clear-contradiction.md",
+          "test": "test_live_clear_contradiction",
+          "passes": 0,
+          "runs": 0,
+          "required": 3,
+          "passed": false
+        },
+        {
+          "scenario": "FT-02-ambiguous-contradiction",
+          "file": "FT-02-ambiguous-contradiction.md",
+          "test": "test_live_ambiguous_contradiction",
+          "passes": 0,
+          "runs": 0,
+          "required": 3,
+          "passed": false
+        },
+        {
+          "scenario": "FT-03-staleness",
+          "file": "FT-03-staleness.md",
+          "test": "test_live_staleness",
+          "passes": 0,
+          "runs": 0,
+          "required": 3,
+          "passed": false
+        },
+        {
+          "scenario": "FT-04-revocation",
+          "file": "FT-04-revocation.md",
+          "test": "test_live_revocation",
+          "passes": 0,
+          "runs": 0,
+          "required": 3,
+          "passed": false
+        },
+        {
+          "scenario": "FT-05-memory-injection",
+          "file": "FT-05-memory-injection.md",
+          "test": "test_live_memory_injection",
+          "passes": 0,
+          "runs": 0,
+          "required": 3,
+          "passed": false
+        },
+        {
+          "scenario": "FT-06-scope-isolation",
+          "file": "FT-06-scope-isolation.md",
+          "test": "test_live_scope_isolation",
+          "passes": 0,
+          "runs": 0,
+          "required": 3,
+          "passed": false
+        }
+      ]
+    },
+    {
+      "id": "20261110T112351Z-9beb3896",
+      "at": "2026-11-10T11:23:51+00:00",
+      "passed": true,
+      "issues": [],
+      "offline": {
+        "summary": "121 passed, 18 deselected in 4.58s",
+        "exit_code": 0
+      },
+      "live_summary": "18 passed in 39.60s",
+      "trials": [
+        {
+          "test": "test_live_clear_contradiction",
+          "trial": 1,
+          "status": "passed",
+          "seconds": 3.983,
+          "observations": {
+            "guard_calls": "3",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_clear_contradiction",
+          "trial": 2,
+          "status": "passed",
+          "seconds": 3.531,
+          "observations": {
+            "guard_calls": "3",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_clear_contradiction",
+          "trial": 3,
+          "status": "passed",
+          "seconds": 2.987,
+          "observations": {
+            "guard_calls": "3",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_ambiguous_contradiction",
+          "trial": 1,
+          "status": "passed",
+          "seconds": 0.127,
+          "observations": {
+            "guard_calls": "1",
+            "providers": "",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_ambiguous_contradiction",
+          "trial": 2,
+          "status": "passed",
+          "seconds": 0.159,
+          "observations": {
+            "guard_calls": "1",
+            "providers": "",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_ambiguous_contradiction",
+          "trial": 3,
+          "status": "passed",
+          "seconds": 0.127,
+          "observations": {
+            "guard_calls": "1",
+            "providers": "",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_staleness",
+          "trial": 1,
+          "status": "passed",
+          "seconds": 1.535,
+          "observations": {
+            "guard_calls": "3",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_staleness",
+          "trial": 2,
+          "status": "passed",
+          "seconds": 1.344,
+          "observations": {
+            "guard_calls": "3",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_staleness",
+          "trial": 3,
+          "status": "passed",
+          "seconds": 1.378,
+          "observations": {
+            "guard_calls": "3",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_revocation",
+          "trial": 1,
+          "status": "passed",
+          "seconds": 3.048,
+          "observations": {
+            "guard_calls": "2",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_revocation",
+          "trial": 2,
+          "status": "passed",
+          "seconds": 1.752,
+          "observations": {
+            "guard_calls": "2",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_revocation",
+          "trial": 3,
+          "status": "passed",
+          "seconds": 2.06,
+          "observations": {
+            "guard_calls": "2",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_memory_injection",
+          "trial": 1,
+          "status": "passed",
+          "seconds": 0.578,
+          "observations": {
+            "guard_calls": "1",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_memory_injection",
+          "trial": 2,
+          "status": "passed",
+          "seconds": 0.554,
+          "observations": {
+            "guard_calls": "1",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_memory_injection",
+          "trial": 3,
+          "status": "passed",
+          "seconds": 0.528,
+          "observations": {
+            "guard_calls": "1",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_scope_isolation",
+          "trial": 1,
+          "status": "passed",
+          "seconds": 3.472,
+          "observations": {
+            "guard_calls": "2",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_scope_isolation",
+          "trial": 2,
+          "status": "passed",
+          "seconds": 5.924,
+          "observations": {
+            "guard_calls": "2",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        },
+        {
+          "test": "test_live_scope_isolation",
+          "trial": 3,
+          "status": "passed",
+          "seconds": 5.83,
+          "observations": {
+            "guard_calls": "2",
+            "providers": "groq",
+            "retrieval": "FTS-only"
+          }
+        }
+      ],
+      "scores": [
+        {
+          "scenario": "FT-01-clear-contradiction",
+          "file": "FT-01-clear-contradiction.md",
+          "test": "test_live_clear_contradiction",
+          "passes": 3,
+          "runs": 3,
+          "required": 3,
+          "passed": true
+        },
+        {
+          "scenario": "FT-02-ambiguous-contradiction",
+          "file": "FT-02-ambiguous-contradiction.md",
+          "test": "test_live_ambiguous_contradiction",
+          "passes": 3,
+          "runs": 3,
+          "required": 3,
+          "passed": true
+        },
+        {
+          "scenario": "FT-03-staleness",
+          "file": "FT-03-staleness.md",
+          "test": "test_live_staleness",
+          "passes": 3,
+          "runs": 3,
+          "required": 3,
+          "passed": true
+        },
+        {
+          "scenario": "FT-04-revocation",
+          "file": "FT-04-revocation.md",
+          "test": "test_live_revocation",
+          "passes": 3,
+          "runs": 3,
+          "required": 3,
+          "passed": true
+        },
+        {
+          "scenario": "FT-05-memory-injection",
+          "file": "FT-05-memory-injection.md",
+          "test": "test_live_memory_injection",
+          "passes": 3,
+          "runs": 3,
+          "required": 3,
+          "passed": true
+        },
+        {
+          "scenario": "FT-06-scope-isolation",
+          "file": "FT-06-scope-isolation.md",
+          "test": "test_live_scope_isolation",
+          "passes": 3,
+          "runs": 3,
+          "required": 3,
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

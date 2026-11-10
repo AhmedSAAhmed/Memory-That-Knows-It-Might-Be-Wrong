@@ -1,0 +1,7 @@
+[
+  {"category":"location","key":"delivery_city","value":"Dubai","text":"Layla lives in Dubai.","source":"user_stated","quote":"I live in Dubai","scope":"customer"},
+  {"category":"language","key":"language","value":"English","text":"Layla prefers English.","source":"user_stated","quote":"I prefer English","scope":"customer"},
+  {"category":"contact_pref","key":"contact_preference","value":"WhatsApp","text":"Layla prefers WhatsApp for updates.","source":"user_stated","quote":"Please contact me on WhatsApp","scope":"customer"},
+  {"category":"open_issue","key":"damaged_sofa","value":"Damaged sofa under review","text":"Layla reported a damaged sofa on ticket QH1042.","source":"user_stated","quote":"My sofa arrived damaged","scope":"order:QH1042"},
+  {"category":"commitment","key":"refund_review","value":"Review pending; no refund approved","text":"An agent promised a refund review, not approval.","source":"agent_record","quote":"We will review the refund request","scope":"order:QH1042"}
+]

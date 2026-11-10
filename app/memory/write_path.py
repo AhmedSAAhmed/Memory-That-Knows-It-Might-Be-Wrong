@@ -19,9 +19,10 @@ class WriteResult:
 
 
 class WritePath:
-    def __init__(self, store: MemoryStore, *, clock: Clock | None = None):
+    def __init__(self, store: MemoryStore, *, clock: Clock | None = None, allow_session: bool = False):
         self.store = store
         self.clock = clock or SystemClock()
+        self.allow_session = allow_session
 
     def write(self, customer_id: str, message_id: str, message: str, candidates: list[Candidate], *,
               guard_score: float | None = None, incognito: bool = False,
@@ -48,7 +49,7 @@ class WritePath:
                 return WriteResult(reasons=[reason])
             blocked, consented = self.store.privacy(customer_id)
             for candidate in candidates:
-                reason = candidate_reason(candidate, message, blocked=blocked, consented=consented, allowed_orders=allowed_orders or set())
+                reason = candidate_reason(candidate, message, blocked=blocked, consented=consented, allowed_orders=allowed_orders or set(), allow_session=self.allow_session)
                 if reason:
                     self.store._audit(db, customer_id, "not_stored", now, reason=reason)
                     result.reasons.append(reason)
@@ -57,6 +58,11 @@ class WritePath:
                                     (customer_id, candidate.scope, candidate.key, message_id)).fetchone()
                 if replay:
                     result.reasons.append("replayed_event")
+                    continue
+                tombstone = self.store.tombstone(customer_id, candidate.scope, candidate.key)
+                if tombstone and (candidate.source not in CUSTOMER_SOURCES or event_at <= datetime.fromisoformat(tombstone["revoked_at"])):
+                    result.reasons.append("revoked_replay")
+                    self.store._audit(db, customer_id, "not_stored", now, reason="revoked_replay")
                     continue
                 current = self.store.list_memories(customer_id, scope=candidate.scope)
                 current = [r for r in current if r.key == candidate.key]
