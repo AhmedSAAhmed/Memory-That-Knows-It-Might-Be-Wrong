@@ -1,6 +1,6 @@
 # Day 1: memory schema, persistence and write path
 
-Status: local checks passed (2026-11-10, Asia/Dubai); publishing Day 1 to Render. Live verification will be recorded separately once the new revision is serving.
+Status: pass locally and deployed to Render (2026-11-10, Asia/Dubai). [Live verification](day-1-deploy.md) confirms revision `e295a4faa165a2bec737f5d5a7345be6d4b40466` and successful public memory writes.
 
 ## Delivered
 
